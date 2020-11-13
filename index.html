@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/proj4.js"></script>
+        <script src="js/proj4leaflet.js"></script>
+        <script src="data/ROI_0.js"></script>
+        <script src="data/ROI2_PDI_1.js"></script>
+        <script>
+        var crs = new L.Proj.CRS('EPSG:32630', '+proj=utm +zone=30 +datum=WGS84 +units=m +no_defs', {
+            resolutions: [2800, 1400, 700, 350, 175, 84, 42, 21, 11.2, 5.6, 2.8, 1.4, 0.7, 0.35, 0.14, 0.07],
+        });
+        var map = L.map('map', {
+            crs: crs,
+            continuousWorld: false,
+            worldCopyJump: false, 
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[11.1736574946,-5.37902922041],[13.559077359,-1.61232099279]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        var measureControl = new L.Control.Measure({
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        function pop_ROI_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? Autolinker.link(String(feature.properties['OBJECTID'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom'] !== null ? Autolinker.link(String(feature.properties['Nom'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Sup_Ha'] !== null ? Autolinker.link(String(feature.properties['Sup_Ha'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ROI_0_0() {
+            return {
+                pane: 'pane_ROI_0',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,133,150,1.0)',
+            }
+        }
+        map.createPane('pane_ROI_0');
+        map.getPane('pane_ROI_0').style.zIndex = 400;
+        map.getPane('pane_ROI_0').style['mix-blend-mode'] = 'normal';
+        var layer_ROI_0 = new L.geoJson(json_ROI_0, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_ROI_0',
+            onEachFeature: pop_ROI_0,
+            style: style_ROI_0_0,
+        });
+        bounds_group.addLayer(layer_ROI_0);
+        map.addLayer(layer_ROI_0);
+        function pop_ROI2_PDI_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NOM'] !== null ? Autolinker.link(String(feature.properties['NOM'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Perimetre'] !== null ? Autolinker.link(String(feature.properties['Perimetre'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Superficie'] !== null ? Autolinker.link(String(feature.properties['Superficie'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PDI'] !== null ? Autolinker.link(String(feature.properties['PDI'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PDI_2'] !== null ? Autolinker.link(String(feature.properties['PDI_2'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ROI2_PDI_1_0(feature) {
+            if (feature.properties['PDI_2'] >= 9.000000 && feature.properties['PDI_2'] <= 206.000000 ) {
+                return {
+                pane: 'pane_ROI2_PDI_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,245,235,1.0)',
+            }
+            }
+            if (feature.properties['PDI_2'] >= 206.000000 && feature.properties['PDI_2'] <= 403.000000 ) {
+                return {
+                pane: 'pane_ROI2_PDI_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,209,165,1.0)',
+            }
+            }
+            if (feature.properties['PDI_2'] >= 403.000000 && feature.properties['PDI_2'] <= 600.000000 ) {
+                return {
+                pane: 'pane_ROI2_PDI_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,146,67,1.0)',
+            }
+            }
+            if (feature.properties['PDI_2'] >= 600.000000 && feature.properties['PDI_2'] <= 797.000000 ) {
+                return {
+                pane: 'pane_ROI2_PDI_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,79,5,1.0)',
+            }
+            }
+            if (feature.properties['PDI_2'] >= 797.000000 && feature.properties['PDI_2'] <= 994.000000 ) {
+                return {
+                pane: 'pane_ROI2_PDI_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(127,39,4,1.0)',
+            }
+            }
+        }
+        map.createPane('pane_ROI2_PDI_1');
+        map.getPane('pane_ROI2_PDI_1').style.zIndex = 401;
+        map.getPane('pane_ROI2_PDI_1').style['mix-blend-mode'] = 'normal';
+        var layer_ROI2_PDI_1 = new L.geoJson(json_ROI2_PDI_1, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_ROI2_PDI_1',
+            onEachFeature: pop_ROI2_PDI_1,
+            style: style_ROI2_PDI_1_0,
+        });
+        bounds_group.addLayer(layer_ROI2_PDI_1);
+        map.addLayer(layer_ROI2_PDI_1);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'ROI2_PDI<br /><table><tr><td style="text-align: center;"><img src="legend/ROI2_PDI_1_9000020600000.png" /></td><td> 9.0000 - 206.0000 </td></tr><tr><td style="text-align: center;"><img src="legend/ROI2_PDI_1_206000040300001.png" /></td><td> 206.0000 - 403.0000 </td></tr><tr><td style="text-align: center;"><img src="legend/ROI2_PDI_1_403000060000002.png" /></td><td> 403.0000 - 600.0000 </td></tr><tr><td style="text-align: center;"><img src="legend/ROI2_PDI_1_600000079700003.png" /></td><td> 600.0000 - 797.0000 </td></tr><tr><td style="text-align: center;"><img src="legend/ROI2_PDI_1_797000099400004.png" /></td><td> 797.0000 - 994.0000 </td></tr></table>': layer_ROI2_PDI_1,'<img src="legend/ROI_0.png" /> ROI': layer_ROI_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_ROI2_PDI_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['NOM'] !== null?String('<div style="color: #000000; font-size: 8pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['NOM']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_ROI2_PDI_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_ROI2PDI_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_ROI2PDI_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_ROI2PDI_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_ROI2PDI_1]);
+        });
+        </script>
+    </body>
+</html>
